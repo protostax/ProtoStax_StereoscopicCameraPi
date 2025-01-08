@@ -1,44 +1,60 @@
 # ProtoStax_StereoscopicCameraPi
-3D (Stereoscopic) Camera streamer using two Raspberry Pi Zeros and two
+3D (Stereoscopic) Camera streamer using Raspberry Pi and two
 Pi Cameras in a ProtoStax Enclosure.
-Stack with ProtoStax Enclosure for RPI UPSPack Standard V3
+
+You can either use a Raspberry Pi 5 which can support two camera
+inputs, or use two Raspberry Pi Zeros
+
+Optionally
+Stack with ProtoStax Enclosure for RPI UPSPack Standard V3 (with the
+Raspberry Pi Zero setup)
 for a portable setup with backup power. 
 
 ![ProtoStax Stereoscopic Camera Pi](ProtoStax_StereoscopicCameraPi.jpg)
 ![ProtoStax Stereoscopic Camera Pi](ProtoStax_StereoscopicCameraPi2.jpg)
 
 using
-* 2x Raspberry Pi Zero W
+* 1x Raspberry Pi 5 OR 2x Raspberry Pi Zero W
 * 2x Pi Camera V2
-* [ProtoStax for Raspberry Pi Zero](https://www.protostax.com/products/protostax-for-raspberry-pi-zero)
+* EITHER [ProtoStax Enclosure for Raspberry Pi Zero](https://www.protostax.com/products/protostax-for-raspberry-pi-zero)
+* OR [ProtoStax Enclosure for Raspberry Pi 3/4/5](https://www.protostax.com/products/protostax-for-raspberry-pi-b)
 * [ProtoStax Stereoscopic 3D Camera Kit for Raspberry Pi Camera - 60mm Stereo Base](https://www.protostax.com/products/protostax-3d-camera-kit-for-raspberry-pi-camera)
 
-Stack with [ProtoStax Enclosurefor RPI UPSPack Standard V3](https://www.protostax.com/products/protostax-enclosure-for-rpi-upspack-standard-v3) for a portable setup with backup power. 
+Stack with
+[ProtoStax Enclosurefor RPI UPSPack Standard V3](https://www.protostax.com/products/protostax-enclosure-for-rpi-upspack-standard-v3)
+for a portable setup with backup power (with the Raspberry Pi Zero
+setup - Raspberry Pi 5 requires 5A of power which cannot be provided
+by the UPSPack Standard V3). 
 
 For further instructions, see the
 [Stereoscopic (3D) Streaming Camera and Viewer](https://www.protostax.com/blogs/news/stereoscopic-3d-streaming-camera-and-viewer)
 
+[Stereoscopic (3D) Streaming Camera and Viewer - Part 2](https://www.hackster.io/sridhar-rajagopal/stereoscopic-3d-streaming-camera-and-viewer-part-2-1754f7)
+
 
 ## Prerequisites
 
-* Enable Camera on the Raspberry Pi
-* Python 3. The code assumes you are
-  using Python 3!
-* picamera Python library. The latest version of Raspberry Pi OS
-(Bullseye) does not support picamera as Bullseye has moved to
-libcamera. picamera is installed and available by default on Buster.
-* Raspberry Pi OS Buster (or earlier). See above.
+* Enable Camera on the Raspberry Pi - on the latest Raspberry Pi and
+  Raspberry Pi OS, this is done automatically when you connect a
+  camera to your Pi. 
+* Python 3. The code assumes you are using Python 3!
+* picamera2 Python library. This project has been updated to use
+PiCamera2. If you are using an older version of Raspberry Pi OS
+(Buster or ealier) or are
+using the legacy camera stack please use the previous version of this project, which used PiCamera. 
 
-The program assumes that the two Raspberry Pi Zero Ws are named leftcam.local
-and rightcam.local. Either name the Raspberry Pi Zero Ws as above, or
+If you are using the 2x Raspberry Pi Zero setup, the program assumes
+that the two Raspberry Pi Zero Ws are named
+leftcam.local and rightcam.local. Either name the Raspberry Pi Zero Ws as above, or
 note their actual names to update in the program
 
 
 ## Installing
 
-Install on each your two Raspberry Pi Zeros.
+Install on your Raspberry Pi 5 or on each your two Raspberry Pi Zeros.
 
-The program assumes that the two Raspberry Pi Zero Ws are named leftcam.local
+If you are using the 2x Raspberry Pi Zero setup, the program assumes
+that the two Raspberry Pi Zero Ws are named leftcam.local
 and rightcam.local. Either name the Raspberry Pi Zero Ws as above, or
 note their actual names to update in the program
 
@@ -49,7 +65,8 @@ git clone https://github.com/protostax/ProtoStax_StereoscopicCameraPi
 
 ## Usage
 
-The program assumes that the two Raspberry Pi Zero Ws are named leftcam.local
+If you are using the 2x Raspberry Pi Zero setup, the program assumes
+that the two Raspberry Pi Zero Ws are named leftcam.local
 and rightcam.local. Either name the Raspberry Pi Zero Ws as above, or
 note their actual names to update in the program (stream.py)
 
@@ -64,8 +81,16 @@ cd ProtoStax_StereoscopicCameraPi
 python3 stream.py
 ```
 
-Each program will expose an MJPG video stream of the local camera via a simple webserver of
+The program will expose an MJPG video stream of the local camera via a simple webserver of
 the local video as
+
+For Raspberry Pi 5:
+
+http://yourpinamehere.local:8000/stream.mjpg
+http://yourpinamehere.local:8000/rightstream.mjpg
+http://yourpinamehere.local:8000/leftstream.mjpg
+
+For Rasberry Pi Zero setup:
 
 http://leftcam.local:8000/stream.mjpg
 and
@@ -74,10 +99,11 @@ http://rightcam.local:8000/stream.mjpg
 The program also has a home page (index.html) that will expose both
 video streams as a stereoscopic image (side-by-side), as
 
+http://yourpinamehere.local:8000/
+or (for Raspberry Pi Zero setup:)
 http://leftcam.local:8000/
 or
 http://rightcam.local:8000/
-
 (you can access the stereoscopic stream from either url)
 
 You can open the link on your mobile phone browser and place the phone
@@ -88,11 +114,18 @@ The viewer can thus see everything in 3D. The camera operator can move
 around to give the viewer a 3D tour from the comfort of
 their couch!
 
+This project uses richtr's [NoSleep.js]
+(https://github.com/richtr/NoSleep.js) library to prevent the mobile phone from
+auto-locking after a period of inactivity which will happen when you
+display your phone in the Google Cardboard Viewer.
+
 Stack with
 [ProtoStax Enclosurefor RPI UPSPack Standard V3](https://www.protostax.com/products/protostax-enclosure-for-rpi-upspack-standard-v3)
 for a portable setup with backup power, so the camera operator is not
 bound by power cables. When the battery is low, the camera setup can
-be plugged back in to provide power and also recharge the battery. 
+be plugged back in to provide power and also recharge the battery. (with the Raspberry Pi Zero
+setup - Raspberry Pi 5 requires 5A of power which cannot be provided
+by the UPSPack Standard V3). 
 
 
 ## Running the script as a service
