@@ -251,7 +251,7 @@ outputleft = None
 outputright = None
 
 try:
-    picam2left = Picamera2(0)
+    picam2left = Picamera2(1)
     picam2left.configure(picam2left.create_video_configuration(main={"size": (640, 480)}))
     outputleft = StreamingOutput()
     # picam2left.start_recording(JpegEncoder(), FileOutput(outputleft))
@@ -262,7 +262,7 @@ except Exception as e:
     outputleft = None
 
 try:
-    picam2right = Picamera2(1)
+    picam2right = Picamera2(0)
     picam2right.configure(picam2right.create_video_configuration(main={"size": (640, 480)}))
     outputright = StreamingOutput()
     # picam2right.start_recording(JpegEncoder(), FileOutput(outputright))
